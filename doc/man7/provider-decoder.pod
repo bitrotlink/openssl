@@ -15,26 +15,26 @@ provider-decoder - The OSSL_DECODER library E<lt>-E<gt> provider functions
   */
 
  /* Decoder parameter accessor and descriptor */
- const OSSL_PARAM *OSSL_FUNC_decoder_gettable_params(void *provctx);
- int OSSL_FUNC_decoder_get_params(OSSL_PARAM params[]);
+ const OSSL_PARAM *OSSL_FUNC_decoder_gettable_params_fn(void *provctx);
+ int OSSL_FUNC_decoder_get_params_fn(OSSL_PARAM params[]);
 
  /* Functions to construct / destruct / manipulate the decoder context */
- void *OSSL_FUNC_decoder_newctx(void *provctx);
- void OSSL_FUNC_decoder_freectx(void *ctx);
- const OSSL_PARAM *OSSL_FUNC_decoder_settable_ctx_params(void *provctx);
- int OSSL_FUNC_decoder_set_ctx_params(void *ctx, const OSSL_PARAM params[]);
+ void *OSSL_FUNC_decoder_newctx_fn(void *provctx);
+ void OSSL_FUNC_decoder_freectx_fn(void *ctx);
+ const OSSL_PARAM *OSSL_FUNC_decoder_settable_ctx_params_fn(void *provctx);
+ int OSSL_FUNC_decoder_set_ctx_params_fn(void *ctx, const OSSL_PARAM params[]);
 
  /* Functions to check selection support */
- int OSSL_FUNC_decoder_does_selection(void *provctx, int selection);
+ int OSSL_FUNC_decoder_does_selection_fn(void *provctx, int selection);
 
  /* Functions to decode object data */
- int OSSL_FUNC_decoder_decode(void *ctx, OSSL_CORE_BIO *in,
+ int OSSL_FUNC_decoder_decode_fn(void *ctx, OSSL_CORE_BIO *in,
                               int selection,
                               OSSL_CALLBACK *data_cb, void *data_cbarg,
                               OSSL_PASSPHRASE_CALLBACK *cb, void *cbarg);
 
  /* Functions to export a decoded object */
- void *OSSL_FUNC_decoder_export_object(void *ctx,
+ int OSSL_FUNC_decoder_export_object_fn(void *ctx,
                                        const void *objref, size_t objref_sz,
                                        OSSL_CALLBACK *export_cb,
                                        void *export_cbarg);
@@ -83,7 +83,7 @@ For example, the "function" OSSL_FUNC_decoder_decode() has these:
                                    int selection,
                                    OSSL_CALLBACK *data_cb, void *data_cbarg,
                                    OSSL_PASSPHRASE_CALLBACK *cb, void *cbarg);
- static ossl_inline OSSL_FUNC_decoder_decode_fn
+ static ossl_inline OSSL_FUNC_decoder_decode_fn*
      OSSL_FUNC_decoder_decode(const OSSL_DISPATCH *opf);
 
 L<OSSL_DISPATCH(3)> arrays are indexed by numbers that are provided as
